@@ -1,6 +1,8 @@
 #coding = UTF-8
 from socket import *
 from config import *
+from handler import Request_Handler
+from handler import Response_Handler
 
 def ServerInit():
     ServerSocket = socket(AF_INET, SOCK_STREAM)
@@ -14,9 +16,11 @@ def ServerInit():
 
 def Tcplink(sock, addr):
     print "New Connection from %s " % str(addr)
+    print "    "
     request = sock.recv(1024)
-    Data = Handle_Request(request)
-    response(Data, sock)
+    Data = Request_Handler(request)
+    if Data.status:
+        Response_Handler(Data, sock)
     sock.close()
     
 
